@@ -1,5 +1,9 @@
 # Política de privacidad — CarLyrics
 
+> **Camino no tomado.** El proyecto se archivó sin publicar — ver
+> [CONCLUSIONES.md](CONCLUSIONES.md). Este documento queda como referencia
+> de lo que habría hecho falta.
+
 *Última actualización: 2026*
 
 Este texto es el mismo que la app muestra en Ajustes → Privacidad. Publicalo

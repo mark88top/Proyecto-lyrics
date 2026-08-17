@@ -1,5 +1,9 @@
 # Checklist de App Review
 
+> **Camino no tomado.** El proyecto se archivó sin publicar — ver
+> [CONCLUSIONES.md](CONCLUSIONES.md). Este documento queda como referencia
+> de lo que habría hecho falta.
+
 Ordenado por probabilidad de causar rechazo.
 
 ## Riesgos altos

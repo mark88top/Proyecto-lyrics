@@ -1,5 +1,9 @@
 # Donaciones
 
+> **Camino no tomado.** El proyecto se archivó sin publicar — ver
+> [CONCLUSIONES.md](CONCLUSIONES.md). Este documento queda como referencia
+> de lo que habría hecho falta.
+
 ## La regla que hay que respetar
 
 Las guías de App Review 3.2.1(vii) y 3.2.2 distinguen dos casos:
