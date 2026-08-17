@@ -16,10 +16,8 @@
 	    2. Pedí el entitlement a Apple.
 	    3. Cuando lo aprueben, descomentá y regenerá el perfil.
 	-->
-	<!--
 	<key>com.apple.developer.carplay-audio</key>
 	<true/>
-	-->
 
 	<key>keychain-access-groups</key>
 	<array>

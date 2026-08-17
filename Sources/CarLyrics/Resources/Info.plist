@@ -18,10 +18,69 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).spotify-auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(SPOTIFY_REDIRECT_SCHEME)</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CLLyricsAPIBaseURL</key>
+	<string>$(LYRICS_API_BASE_URL)</string>
+	<key>CLSpotifyClientID</key>
+	<string>$(SPOTIFY_CLIENT_ID)</string>
+	<key>CLSpotifyRedirectURI</key>
+	<string>$(SPOTIFY_REDIRECT_SCHEME)://callback</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>spotify</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>CPTemplateApplicationSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>CPTemplateApplicationScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>CarPlay</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).CarPlaySceneDelegate</string>
+				</dict>
+			</array>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>Phone</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).PhoneSceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
@@ -40,75 +99,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-
-	<!-- Configuración de escenas: una para el iPhone y otra para CarPlay. -->
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<true/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Phone</string>
-					<key>UISceneClassName</key>
-					<string>UIWindowScene</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).PhoneSceneDelegate</string>
-				</dict>
-			</array>
-			<key>CPTemplateApplicationSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>CarPlay</string>
-					<key>UISceneClassName</key>
-					<string>CPTemplateApplicationScene</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).CarPlaySceneDelegate</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
-
-	<!-- Retorno del login de Spotify (Authorization Code + PKCE). -->
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).spotify-auth</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>$(SPOTIFY_REDIRECT_SCHEME)</string>
-			</array>
-		</dict>
-	</array>
-
-	<!-- Necesario para detectar / abrir la app de Spotify. -->
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>spotify</string>
-	</array>
-
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
-
-	<!-- Configuración inyectada desde los .xcconfig. -->
-	<key>CLSpotifyClientID</key>
-	<string>$(SPOTIFY_CLIENT_ID)</string>
-	<key>CLSpotifyRedirectURI</key>
-	<string>$(SPOTIFY_REDIRECT_SCHEME)://callback</string>
-	<key>CLLyricsAPIBaseURL</key>
-	<string>$(LYRICS_API_BASE_URL)</string>
-
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 </dict>

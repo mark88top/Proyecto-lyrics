@@ -1,3 +1,16 @@
 #include "Base.xcconfig"
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
+
+// En el simulador firmamos ad-hoc (identidad "-") en vez de desactivar la
+// firma. Así no hace falta una cuenta de Apple Developer / DEVELOPMENT_TEAM
+// válido, PERO igual se embeben los entitlements (el simulador no los valida
+// contra Apple). Esto es lo que hace que CarPlay reconozca la app y la muestre
+// en su pantalla — con la firma desactivada, el entitlement carplay-audio no
+// se embebe y la app no aparece en CarPlay. Los builds para dispositivo real
+// siguen firmando normalmente con el equipo configurado.
+CODE_SIGNING_ALLOWED[sdk=iphonesimulator*] = YES
+CODE_SIGNING_REQUIRED[sdk=iphonesimulator*] = NO
+CODE_SIGN_STYLE[sdk=iphonesimulator*] = Manual
+CODE_SIGN_IDENTITY[sdk=iphonesimulator*] = -
+PROVISIONING_PROFILE_SPECIFIER[sdk=iphonesimulator*] =

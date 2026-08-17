@@ -1,9 +1,9 @@
 // Ajustes comunes a Debug y Release.
 // Los valores sensibles/personales viven en Secrets.xcconfig (no versionado).
 
-#include? "Secrets.xcconfig"
-
-// Valores por defecto si Secrets.xcconfig no existe todavía.
+// Valores por defecto si Secrets.xcconfig no existe todavía. El #include? va
+// DESPUÉS para que, cuando exista, Secrets.xcconfig pise estos defaults (en
+// xcconfig gana la última asignación).
 APP_BUNDLE_ID = com.carlyrics.app
 DEVELOPMENT_TEAM =
 
@@ -18,3 +18,5 @@ SPOTIFY_CLIENT_ID =
 
 // Endpoint del proveedor de letras.
 LYRICS_API_BASE_URL = https:/$()/lrclib.net
+
+#include? "Secrets.xcconfig"
