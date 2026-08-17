@@ -1,0 +1,76 @@
+/* English */
+
+"app.name" = "CarLyrics";
+
+"tab.lyrics" = "Lyrics";
+"tab.settings" = "Settings";
+"tab.support" = "Support";
+"action.retry" = "Retry";
+"action.close" = "Close";
+"action.done" = "Done";
+
+"onboarding.title" = "The lyrics of whatever you're listening to";
+"onboarding.subtitle" = "Free, no ads, no account of ours. Supported by donations.";
+"onboarding.step.spotify" = "Connect your Spotify account";
+"onboarding.step.spotify.detail" = "We only ask for read access to know which song is playing. We can't change your music or see your private playlists.";
+"onboarding.step.carplay" = "Plug your phone into the car";
+"onboarding.step.carplay.detail" = "If your car has CarPlay, CarLyrics shows up like any other app. Lyrics appear as a few large lines, made for a quick glance.";
+"onboarding.step.safety" = "Driving comes first";
+"onboarding.step.safety.detail" = "Don't read the screen while driving. If you're at the wheel, watch the road — the lyrics can wait.";
+"onboarding.continue" = "Continue";
+"onboarding.connect" = "Connect with Spotify";
+
+"nowplaying.nothing" = "Nothing is playing";
+"nowplaying.nothing.detail" = "Start a song in Spotify and come back.";
+"nowplaying.openSpotify" = "Open Spotify";
+"lyrics.searching" = "Looking for the lyrics…";
+"lyrics.notFound" = "We couldn't find lyrics for this track";
+"lyrics.notFound.detail" = "The lyrics database is community-run and keeps growing. Try again later.";
+"lyrics.instrumental" = "Instrumental";
+"lyrics.instrumental.detail" = "This track has no lyrics.";
+"lyrics.unsynced" = "Unsynced lyrics";
+"lyrics.source" = "Lyrics by %@";
+
+"error.offline" = "You're offline. We'll retry when you're back.";
+"error.rateLimited" = "Too many requests in a row. Give it a few seconds.";
+"error.generic" = "Something went wrong fetching the lyrics.";
+"error.notConfigured" = "The Spotify Client ID is missing.";
+"error.login.cancelled" = "You cancelled the sign-in.";
+"error.login.invalid" = "Spotify's response wasn't valid.";
+"error.needsLogin" = "Connect your Spotify account to get started.";
+"error.spotifyUnreachable" = "We can't reach Spotify right now.";
+"error.spotifyNotRunning" = "Open Spotify and hit play to connect.";
+
+"settings.title" = "Settings";
+"settings.account" = "Account";
+"settings.connected" = "Spotify connected";
+"settings.disconnect" = "Disconnect";
+"settings.connect" = "Connect with Spotify";
+"settings.sync" = "Sync";
+"settings.offset" = "Fine-tune";
+"settings.offset.detail" = "If the lyrics run ahead, drag right. If they lag, drag left.";
+"settings.display" = "Display";
+"settings.fontSize" = "Text size";
+"settings.carplay" = "CarPlay";
+"settings.carplay.lines" = "Visible lines";
+"settings.carplay.lines.detail" = "Fewer lines means less to read at the wheel. We recommend 3.";
+"settings.keepAwake" = "Keep screen on";
+"settings.data" = "Data";
+"settings.clearCache" = "Clear saved lyrics";
+"settings.cacheSize" = "Using %@";
+"settings.about" = "About";
+"settings.privacy" = "Privacy";
+"settings.version" = "Version";
+
+"tips.title" = "Support the project";
+"tips.headline" = "CarLyrics is free and will stay free";
+"tips.body" = "No ads, no paid features, no data selling. If you find it useful and want it to keep growing, you can leave a tip. It's entirely optional — nothing in the app unlocks when you donate.";
+"tips.unavailable" = "Tips aren't available right now.";
+"tips.thankYou" = "Thank you. Really.";
+"tips.alreadyTipped" = "You've already chipped in. Thank you 💚";
+
+"carplay.tab.lyrics" = "Lyrics";
+"carplay.tab.nowPlaying" = "Now Playing";
+"carplay.noLyrics" = "No lyrics available";
+"carplay.connect" = "Open CarLyrics on your phone to connect Spotify";
+"carplay.safetyNotice" = "Don't read while driving";

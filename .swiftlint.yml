@@ -1,0 +1,23 @@
+# Configuración liviana: SwiftLint es opcional en este proyecto.
+included:
+  - Sources
+  - Tests
+
+disabled_rules:
+  - trailing_whitespace
+  - todo
+
+line_length:
+  warning: 130
+  error: 200
+  ignores_comments: true
+
+type_body_length:
+  warning: 350
+
+file_length:
+  warning: 500
+
+identifier_name:
+  min_length: 2
+  excluded: [id, up, to, a, b, c, t]

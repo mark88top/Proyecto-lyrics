@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  IMPORTANTE — LEER docs/CARPLAY-ENTITLEMENT.md ANTES DE COMPILAR.
+
+	  La clave `com.apple.developer.carplay-audio` sólo funciona una vez que
+	  Apple aprueba la solicitud de entitlement de CarPlay para tu Team ID y
+	  regenerás el perfil de aprovisionamiento. Hasta entonces, dejarla activa
+	  hace fallar la firma con "Provisioning profile doesn't include the
+	  com.apple.developer.carplay-audio entitlement".
+
+	  Flujo recomendado:
+	    1. Desarrollá con esta clave COMENTADA (la app iPhone compila y corre).
+	    2. Pedí el entitlement a Apple.
+	    3. Cuando lo aprueben, descomentá y regenerá el perfil.
+	-->
+	<!--
+	<key>com.apple.developer.carplay-audio</key>
+	<true/>
+	-->
+
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)$(CFBundleIdentifier)</string>
+	</array>
+</dict>
+</plist>

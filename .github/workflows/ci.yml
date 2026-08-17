@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Prepare configuration
+        # El CI no tiene secretos: alcanza con el ejemplo para compilar,
+        # porque la app degrada a "falta configurar" en vez de romper.
+        run: cp Configuration/Secrets.example.xcconfig Configuration/Secrets.xcconfig
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project CarLyrics.xcodeproj \
+            -scheme CarLyrics \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM=""
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -project CarLyrics.xcodeproj \
+            -scheme CarLyrics \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM=""

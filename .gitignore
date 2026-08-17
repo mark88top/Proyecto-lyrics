@@ -1,0 +1,33 @@
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# XcodeGen output (regenerable con `make generate`)
+CarLyrics.xcodeproj/
+
+# SwiftPM
+.swiftpm/
+.build/
+Packages/
+
+# Secretos locales (NUNCA commitear)
+Configuration/Secrets.xcconfig
+
+# macOS
+.DS_Store
+
+# Fastlane / firma
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+*.mobileprovision
+*.p12

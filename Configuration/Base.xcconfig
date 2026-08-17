@@ -1,0 +1,20 @@
+// Ajustes comunes a Debug y Release.
+// Los valores sensibles/personales viven en Secrets.xcconfig (no versionado).
+
+#include? "Secrets.xcconfig"
+
+// Valores por defecto si Secrets.xcconfig no existe todavía.
+APP_BUNDLE_ID = com.carlyrics.app
+DEVELOPMENT_TEAM =
+
+// Esquema de URL de retorno del login de Spotify.
+// Debe coincidir con el Redirect URI cargado en el dashboard de Spotify.
+SPOTIFY_REDIRECT_SCHEME = carlyrics
+SPOTIFY_REDIRECT_URI = $(SPOTIFY_REDIRECT_SCHEME)://callback
+
+// Client ID público de la app de Spotify (no es un secreto: usamos PKCE,
+// sin client secret). Igual se mantiene fuera del repo por prolijidad.
+SPOTIFY_CLIENT_ID =
+
+// Endpoint del proveedor de letras.
+LYRICS_API_BASE_URL = https:/$()/lrclib.net

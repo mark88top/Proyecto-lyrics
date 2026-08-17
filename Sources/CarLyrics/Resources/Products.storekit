@@ -1,0 +1,72 @@
+{
+  "identifier" : "CarLyricsTips",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "TIP-SMALL",
+      "localizations" : [
+        {
+          "description" : "Un cafecito para bancar el proyecto. La app sigue siendo gratis.",
+          "displayName" : "Un café",
+          "locale" : "es_AR"
+        },
+        {
+          "description" : "Buy a coffee to support the project. The app stays free.",
+          "displayName" : "A coffee",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.carlyrics.tip.small",
+      "referenceName" : "Tip pequeño",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "TIP-MEDIUM",
+      "localizations" : [
+        {
+          "description" : "Una porción de pizza. Gracias de verdad.",
+          "displayName" : "Una pizza",
+          "locale" : "es_AR"
+        },
+        {
+          "description" : "A slice of pizza. Thank you!",
+          "displayName" : "A pizza slice",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.carlyrics.tip.medium",
+      "referenceName" : "Tip mediano",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "TIP-LARGE",
+      "localizations" : [
+        {
+          "description" : "Combustible para seguir desarrollando. Sos un fenómeno.",
+          "displayName" : "Combustible",
+          "locale" : "es_AR"
+        },
+        {
+          "description" : "Fuel for further development. You rock.",
+          "displayName" : "Rocket fuel",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.carlyrics.tip.large",
+      "referenceName" : "Tip grande",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : { "major" : 3, "minor" : 0 }
+}

@@ -1,0 +1,6 @@
+/* Español (idioma base) — los valores por defecto viven en L10n.swift.
+   Este archivo existe para que la app declare `es` como idioma soportado
+   y para poder sobreescribir cadenas puntuales sin tocar código. */
+
+"app.name" = "CarLyrics";
+"carplay.safetyNotice" = "No leas mientras manejás";
