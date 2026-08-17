@@ -1,124 +1,119 @@
-# CarPlay: el entitlement es el riesgo principal del proyecto
+# Cómo se llega a la pantalla del auto
 
-Leé esto antes que nada. No es un trámite: es lo que decide si la parte de
-CarPlay se puede publicar o no.
+> **Revisado en agosto de 2026.** La versión anterior de este documento decía
+> que el entitlement de CarPlay era el riesgo principal del proyecto. Eso era
+> correcto hasta iOS 26 y ya no lo es: existe un camino sancionado que no
+> requiere entitlement, y es el que usan todas las apps del rubro, incluida
+> Musixmatch. El bloqueo real se corrió a otro lado — ver
+> "El problema que sí queda" al final.
 
-## Cómo funciona CarPlay para apps de terceros
+## Los dos caminos
 
-CarPlay no es "tu app en la pantalla del auto". Apple no permite dibujar
-libremente: sólo se pueden usar plantillas del framework `CarPlay`
-(`CPListTemplate`, `CPInformationTemplate`, `CPNowPlayingTemplate`, etc.),
-y para usar cualquiera de ellas hace falta un **entitlement** que Apple
-otorga a mano, por Team ID, tras revisar una solicitud.
+Desde iOS 26 hay dos formas de que contenido de una app de terceros aparezca
+en CarPlay, y sólo una de ellas pasa por el framework `CarPlay`.
 
-Los entitlements de CarPlay se conceden por **categoría de app**, y la lista
-es cerrada:
+### Camino A — Widget + Live Activity (abierto)
 
-| Categoría | Entitlement | Ejemplo |
+- Un widget de la familia `systemSmall` aparece en el Dashboard de CarPlay
+  **automáticamente**, sin trabajo adicional y **sin ningún entitlement**.
+- Las Live Activities también llegan al Dashboard, con el tamaño
+  `activityFamilySmall`. Son de sólo lectura en el auto.
+- El usuario elige qué widgets ver en Ajustes → General → CarPlay.
+
+Fuente: [Turbocharge your app for CarPlay, WWDC25](https://developer.apple.com/videos/play/wwdc2025/216/)
+y [Adding StandBy and CarPlay support to your widget](https://developer.apple.com/documentation/widgetkit/adding-standby-and-carplay-support-to-your-widget).
+
+### Camino B — App de CarPlay (cerrado para nosotros)
+
+Plantillas `CPListTemplate`, `CPNowPlayingTemplate`, etc. Requiere que Apple
+otorgue a mano un entitlement por Team ID, y sólo para una lista cerrada de
+categorías: audio, comunicación, navegación, carga de EV, estacionamiento,
+comida rápida y tareas de conducción.
+
+"Mostrar letras" no encaja en ninguna. No somos una app de audio porque no
+reproducimos nada.
+
+**No vale la pena pedirlo.** No es que sea difícil: es que no existe la
+categoría bajo la cual pedirlo.
+
+## Widget y Live Activity no son lo mismo
+
+Esta distinción es la que la prensa mezcla y es la que define la
+implementación:
+
+| | Widget (`systemSmall`) | Live Activity (`activityFamilySmall`) |
 |---|---|---|
-| Audio | `com.apple.developer.carplay-audio` | Spotify, podcasts, radio |
-| Comunicación | `com.apple.developer.carplay-communication` | WhatsApp, Telegram |
-| Navegación | `com.apple.developer.carplay-maps` | Waze, Google Maps |
-| Carga de EV | `com.apple.developer.carplay-charging` | Redes de carga |
-| Estacionamiento | `com.apple.developer.carplay-parking` | Apps de playas |
-| Comida rápida | `com.apple.developer.carplay-quick-ordering` | Pedidos al paso |
-| Tareas de conducción | `com.apple.developer.carplay-driving-task` | Apps de flota, peajes |
+| Refresco | 40–70 por día; entradas separadas ~5 min | Tiempo real |
+| Sirve para | Estado en reposo del Dashboard | **La letra que avanza línea por línea** |
+| Requiere | Nada | `NSSupportsLiveActivitiesFrequentUpdates` en el Info.plist |
 
-## El problema concreto
+Un widget de WidgetKit no puede seguir una canción: el presupuesto diario no
+da. La letra viva sale de la **Live Activity**, que además es la misma pieza
+que alimenta el Dynamic Island en el teléfono.
 
-**"Mostrar la letra de lo que suena en Spotify" no encaja limpio en ninguna
-de esas categorías.**
+Musixmatch lo confirma por descarte: sus letras llegan a CarPlay como Live
+Activity y explícitamente **no** se pueden ver dentro de su app en CarPlay.
 
-- No es una app de **audio**: no reproducimos nada. El entitlement de audio
-  está pensado para apps que *son* la fuente de sonido.
-- No es **navegación**, ni **comunicación**, ni las otras.
-- **Driving task** es la categoría más amplia, pero Apple la define como
-  tareas *relacionadas con la conducción del vehículo*. Leer letras no lo es.
+## Qué implica para este código
 
-Hay un segundo problema, independiente del primero: **distracción del
-conductor**. Toda la guía de CarPlay gira alrededor de minimizar el tiempo
-de mirada fuera de la ruta. Una pantalla cuyo propósito es que el conductor
-lea texto que cambia todo el tiempo es, por definición, lo contrario.
+El núcleo de la app no cambia. Lo que cambia es la capa de presentación:
 
-**Conclusión honesta: la probabilidad de que Apple apruebe un entitlement de
-CarPlay para una app de letras es baja.** No es imposible —el revisor mira
-el caso concreto— pero conviene planificar asumiendo que la respuesta va a
-ser que no.
+**Se conserva** — `PlaybackCoordinator`, `LyricsRepository`, `LRCParser`,
+`LyricsSynchronizer`, `LyricsCache`, `Track.searchTitle`, el login PKCE.
 
-Esto no invalida el proyecto. Lo que cambia es el orden de las cosas.
+**Se reemplaza** — `CarPlaySceneDelegate`, `CarPlayCoordinator` y
+`CarPlayLyricsBoard` implementan el camino B. Van a:
+- una extensión de WidgetKit con `systemSmall`, y
+- una Live Activity con `activityFamilySmall` para el auto más las vistas
+  compactas del Dynamic Island para el teléfono.
 
-## Plan recomendado
+**Se agrega** — un App Group para compartir estado entre la app y las
+extensiones, y `NSSupportsLiveActivitiesFrequentUpdates` en el Info.plist.
 
-### Fase 1 — Publicar la app de iPhone (sin bloqueo)
+**Se saca** — el entitlement de CarPlay y la escena
+`CPTemplateApplicationSceneSessionRoleApplication` del Info.plist.
 
-La app de iPhone no necesita ningún entitlement especial. Funciona completa:
-conecta con Spotify, busca la letra, la sincroniza y la muestra. Sirve para
-el teléfono en un soporte, para el pasajero, y para escuchar en casa.
+> El código del camino B sigue en el repo a propósito, sin borrar. Es una
+> referencia útil de cómo se arma una app de CarPlay por plantillas, y la
+> lógica de `CarPlayLyricsBoard` (qué líneas mostrar, cuándo repintar) se
+> traslada casi tal cual a la Live Activity.
 
-Esta fase se puede publicar **ya**, y es la que valida el producto.
+## El problema que sí queda
 
-Para esto: dejá `com.apple.developer.carplay-audio` comentado en
-`Sources/CarLyrics/Resources/CarLyrics.entitlements` (así viene) y la escena
-de CarPlay declarada en el Info.plist simplemente nunca se activa.
+**Ejecución en segundo plano.** Para actualizar la Live Activity línea por
+línea con la app fuera de pantalla hay que estar corriendo.
 
-### Fase 2 — Solicitar el entitlement en paralelo
+- Sin servidor propio no hay push, y montar uno rompe el modelo gratuito.
+- Declarar `UIBackgroundModes: audio` sin reproducir audio es causa de
+  rechazo. **Ya lo saqué del Info.plist**, justamente por eso.
+- Vibe declara públicamente que no usa servidores, así que existe una
+  solución local. Averiguar cuál es la primera tarea técnica del proyecto.
 
-Formulario: <https://developer.apple.com/contact/carplay/>
+Hipótesis a probar, en orden: mantener viva la conexión del SDK de Spotify
+(App Remote), y ver hasta dónde llega `NSSupportsLiveActivitiesFrequentUpdates`
+con actualizaciones locales.
 
-Qué mejora las chances, en orden de importancia:
+**Hacé este prototipo antes de escribir más código.** Una Live Activity que
+se actualice cada pocos segundos con la app en background, sin trucos de
+audio. Si eso funciona, el resto es trabajo conocido; si no funciona, no hay
+producto en el auto y conviene saberlo temprano.
 
-1. **Pedir la categoría *audio*, no otra** — y para eso, que la app
-   *reproduzca audio de verdad*. Ver "Cómo volverla elegible" abajo.
-2. **Mostrar la mitigación de distracción, con capturas.** Este proyecto ya
-   la implementa: 3 líneas como máximo, nada tocable en pantalla
-   (`item.isEnabled = false`), refresco limitado a 0,4 s, y un ajuste para
-   bajar a una sola línea. Adjuntá capturas del simulador de CarPlay.
-3. **Explicar el caso de uso del pasajero**, no del conductor.
-4. **Video corto** de la app funcionando en el simulador de CarPlay.
+## Riesgo de política a futuro
 
-Guardá copia de lo que enviás: si te rechazan, la respuesta suele indicar
-qué categoría creen que corresponde.
+La guía de Apple sobre `disfavoredLocations` dice que los widgets que
+dependen de **texto de alta densidad** o de información irrelevante para
+conducir deberían marcarse como no aptos para CarPlay. Una letra de canción
+es exactamente eso.
 
-### Fase 3 — Si te lo aprueban
+Hoy nadie aplica ese criterio y hay una decena de apps publicadas. Si mañana
+se aplica, cae todo el rubro junto.
 
-1. Descomentá la clave en `CarLyrics.entitlements`.
-2. En el portal de desarrollador, regenerá el perfil de aprovisionamiento
-   (el viejo no incluye el entitlement nuevo y la firma va a fallar).
-3. En Xcode: *Signing & Capabilities* → refrescar.
-4. Probá en un auto real o en un head unit compatible.
+Mitigación: que la app valga la pena en el teléfono por sí sola —pantalla
+bloqueada, Dynamic Island, widgets, StandBy—, de modo que la parte del auto
+sea un extra y no el producto entero.
 
-## Cómo volverla elegible para la categoría "audio"
+## Probar sin auto
 
-Si querés maximizar las chances, el camino es que CarLyrics **sea** una app
-de audio, no sólo un visor. La opción más limpia y honesta:
-
-> Que CarLyrics reproduzca la música él mismo, en vez de leer lo que
-> reproduce Spotify.
-
-Con el **Spotify iOS SDK** y una cuenta Premium, la app puede controlar la
-reproducción y presentarse como reproductor (`CPNowPlayingTemplate` +
-`CPListTemplate` de contenido). Ahí sí encaja en "audio": el usuario elige
-qué escuchar desde CarLyrics, CarLyrics reproduce, y la letra es una función
-*de* ese reproductor —exactamente el mismo argumento que usa Spotify para
-mostrar sus propias letras.
-
-Eso es un cambio de alcance considerable (control de reproducción, colas,
-navegación de biblioteca) y por eso no está en esta primera versión. La
-arquitectura lo deja abierto: `PlaybackSource` ya abstrae la fuente, y
-agregar un `SpotifyControllingSource` que además controle es incremental.
-
-## Probar CarPlay sin el entitlement aprobado
-
-Esto sí se puede hacer hoy, y conviene hacerlo antes de solicitar nada:
-
-1. Descomentá `com.apple.developer.carplay-audio` en el archivo de
-   entitlements.
-2. Compilá **para el Simulador** (la firma no se valida ahí).
-3. Simulador → menú **I/O → External Displays → CarPlay**.
-4. Corré con la variable `CARLYRICS_SIMULATED_PLAYBACK=1` (ya está en el
-   scheme) para tener una canción de ejemplo sin cuenta de Spotify.
-
-De ahí salen las capturas para la solicitud.
-
-Acordate de volver a comentar la clave antes de armar el archivo para App
-Store Connect, o la subida va a fallar por entitlement no autorizado.
+Widgets y Live Activities de CarPlay se prueban con el **CarPlay Simulator
+para macOS**, que viene en "Additional Tools for Xcode" (descarga aparte
+desde developer.apple.com/download/all).

@@ -77,10 +77,16 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
+	<!--
+	  UIBackgroundModes está deliberadamente ausente.
+
+	  Declarar el modo `audio` sin reproducir audio es causa de rechazo
+	  (guía 2.5.4). La app necesita ejecución en segundo plano para mover la
+	  letra línea por línea, pero eso se resuelve con una Live Activity, no
+	  declarando un modo que no usamos.
+
+	  Ver docs/CARPLAY-ENTITLEMENT.md, sección "El problema que sí queda".
+	-->
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>

@@ -4,11 +4,14 @@ Ordenado por probabilidad de causar rechazo.
 
 ## Riesgos altos
 
-### 1. Entitlement de CarPlay
-Ver [CARPLAY-ENTITLEMENT.md](CARPLAY-ENTITLEMENT.md). Es el punto más
-delicado del proyecto. **Recomendación: publicá la versión sin CarPlay
-primero.** Con la app ya en la tienda y usuarios reales, la solicitud de
-entitlement tiene mejor sustento que una app que todavía no existe.
+### 1. Modos de fondo declarados y no usados (guía 2.5.4)
+Ver [CARPLAY-ENTITLEMENT.md](CARPLAY-ENTITLEMENT.md), sección "El problema
+que sí queda". Declarar `UIBackgroundModes: audio` sin reproducir audio se
+rechaza. Ya está fuera del Info.plist; si en algún momento se vuelve a
+agregar para mantener viva la app, tiene que haber audio real detrás.
+
+Nota: el **entitlement de CarPlay ya no es un riesgo**, porque no lo vamos a
+pedir. El camino es widget + Live Activity, que no requiere aprobación.
 
 ### 2. Derechos sobre las letras (guía 5.2 — Propiedad intelectual)
 Ver [LEGAL.md](LEGAL.md). Es el otro riesgo estructural. Apple puede pedir

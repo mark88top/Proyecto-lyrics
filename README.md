@@ -3,13 +3,14 @@
 Letras sincronizadas de lo que estés escuchando en Spotify, en el iPhone y
 en CarPlay. Gratis, sin anuncios, sostenida por donaciones.
 
-> **Antes de invertir tiempo en la parte de CarPlay, leé
-> [docs/CARPLAY-ENTITLEMENT.md](docs/CARPLAY-ENTITLEMENT.md).** Apple otorga
-> los entitlements de CarPlay a mano y sólo para una lista cerrada de
-> categorías de app, y "mostrar letras" no encaja limpio en ninguna. La app
-> de iPhone se puede publicar sin ningún trámite especial; la de CarPlay
-> depende de una aprobación que puede no llegar. El documento explica el
-> plan de fases y cómo mejorar las chances.
+> **Antes de tocar la parte de CarPlay, leé
+> [docs/CARPLAY-ENTITLEMENT.md](docs/CARPLAY-ENTITLEMENT.md).** Investigación
+> de agosto de 2026: el entitlement de CarPlay ya no es el bloqueo. Desde
+> iOS 26 se llega a la pantalla del auto con un widget y una Live Activity,
+> sin pedirle permiso a nadie, y es lo que hacen todas las apps del rubro
+> incluida Musixmatch. El código de CarPlay que hay hoy en el repo
+> (`CPListTemplate` y compañía) apunta al camino cerrado y hay que
+> reorientarlo. El bloqueo real ahora es la ejecución en segundo plano.
 
 ---
 
@@ -106,17 +107,20 @@ Dos piezas que vale la pena mirar si venís a tocar el código:
 
 ## Camino a la publicación
 
-1. **Ahora** — configurar Spotify, compilar, probar en el iPhone.
-2. **Semana 1** — pedir *Extended Quota Mode* en el dashboard de Spotify
+1. **Primero que nada** — prototipo de ejecución en segundo plano: una Live
+   Activity que se actualice cada pocos segundos con la app fuera de
+   pantalla, sin declarar modos de audio falsos. Es el único punto que puede
+   matar la parte del auto; conviene saberlo antes de escribir más código.
+2. **Ahora** — configurar Spotify, compilar, probar en el iPhone.
+3. **Semana 1** — pedir *Extended Quota Mode* en el dashboard de Spotify
    (tarda, conviene arrancarlo ya).
-3. **Semana 1** — ícono de 1024×1024, capturas, política de privacidad
+4. **Semana 1** — ícono de 1024×1024, capturas, política de privacidad
    publicada.
-4. **Semana 2** — crear los tres IAP de propina en App Store Connect.
-5. **Semana 2** — subir el build **sin** CarPlay y enviar a revisión.
-6. **En paralelo** — solicitar el entitlement de CarPlay con capturas del
-   simulador.
-7. **Si lo aprueban** — descomentar el entitlement, regenerar el perfil,
-   subir la versión con CarPlay.
+5. **Semana 2** — crear los tres IAP de propina en App Store Connect.
+6. **Semana 2** — subir el build de teléfono y enviar a revisión. No depende
+   de ninguna aprobación especial.
+7. **Después** — sumar el widget y la Live Activity para el auto, en la misma
+   base de código y sin trámite con Apple.
 
 El checklist detallado está en [APP-STORE-REVIEW.md](docs/APP-STORE-REVIEW.md).
 
